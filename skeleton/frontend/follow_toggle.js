@@ -21,6 +21,41 @@ class FollowToggle  {
             // el.value.append($`("Unfollow!")`);
         };
     };
+
+    handleClick() {
+        $('.follow-toggle').on('submit', e => {
+            e.preventDefault();
+            if (this.followState === "followed") {
+                actions[unfollow]();
+            } else {
+                actions[follow](this);
+            }
+        })
+    }
 };
+
+const actions = {
+    follow: function (userArgs) {
+        return $.ajax({
+            method: 'POST',
+            url: '/users',
+            data: {
+                user: userArgs
+            },
+            dataType: 'JSON'
+        })
+    },
+
+    unfollow: function () {
+        return $.ajax({
+            method: 'DELETE',
+            url: '/users',
+            data: {
+                user: userArgs
+            },
+            dataType: 'JSON'
+        })
+    }
+}
 
 module.exports = FollowToggle;
